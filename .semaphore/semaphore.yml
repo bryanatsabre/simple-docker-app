@@ -1,0 +1,37 @@
+---
+
+version: v1.0
+name: Run tests
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Install dependencies
+    task:
+      jobs:
+        - name: setup
+          commands:
+            - /bin/true
+
+  - name: Tests
+    task:
+      prologue:
+        commands:
+          - checkout
+      jobs:
+        - name: bats
+          parallelism: 2
+          commands:
+            - ./test_foo.sh
+        - name: scans
+          commands:
+            - sleep 5
+
+promotions:
+  - name: Build
+    pipeline_file: build.yml
+    auto_promote_on:
+      - result: passed

@@ -1,0 +1,26 @@
+---
+
+version: v1.0
+name: Build
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Build
+    task:
+#      secrets:
+#        - name: google-cloud-stg
+      jobs:
+      - name: Docker build and push to Nexus
+        commands:
+          - checkout
+          - docker build -t "${SEMAPHORE_GIT_SHA:0:7}" .
+          #- docker push "${SEMAPHORE_GIT_SHA:0:7}"
+
+promotions:
+  - name: Integration test
+    pipeline_file: integration.yml
+    auto_promote_on:
+      - result: passed

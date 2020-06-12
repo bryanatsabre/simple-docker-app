@@ -1,0 +1,20 @@
+---
+
+version: v1.0
+name: Dev Deploy
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Request deploy via SNOW
+    task:
+#      secrets:
+#        - name: google-cloud-stg
+      jobs:
+      - name: deploy
+        commands:
+          - sleep 5
+          - /bin/true

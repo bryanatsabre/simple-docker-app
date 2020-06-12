@@ -1,0 +1,28 @@
+---
+
+version: v1.0
+name: Promotion
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Promote
+    task:
+#      secrets:
+#        - name: google-cloud-stg
+      jobs:
+      - name: Promote in Nexus
+        commands:
+          - sleep 5
+          - /bin/true
+
+promotions:
+  - name: Deploy to dev
+    pipeline_file: deploy-dev.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - master

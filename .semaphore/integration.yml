@@ -1,0 +1,28 @@
+---
+
+version: v1.0
+name: Integration
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Run and test
+    task:
+#      secrets:
+#        - name: google-cloud-stg
+      jobs:
+      - name: Pull recently built image and run tests
+        commands:
+          - /bin/true
+#          - checkout
+#          - docker build -t "${SEMAPHORE_GIT_SHA:0:7}" .
+#          - docker run -d "${SEMAPHORE_GIT_SHA:0:7}"
+
+promotions:
+  - name: Promotion
+    pipeline_file: promotion.yml
+    auto_promote_on:
+      - result: passed
